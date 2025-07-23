@@ -5,7 +5,6 @@ from langchain_community.vectorstores import Chroma
 
 import pdfplumber
 from pathlib import Path
-import os
 
 ROOT = Path(__file__).resolve().parent.parent
 PDF_PATH = ROOT / "backend" / "data" / "DLDT 02_2021 BLAC.pdf"
@@ -14,7 +13,7 @@ CHROMA_PATH = ROOT / "backend" / "data" / "chroma_db"
 
 
 def extract_text_with_pdfplumber(pdf_path: Path, txt_path: Path):
-    print("🔍 Extraindo texto do PDF...")
+    print("Extraindo texto do PDF...")
     text = ""
     with pdfplumber.open(pdf_path) as pdf:
         for i, page in enumerate(pdf.pages):
@@ -24,11 +23,11 @@ def extract_text_with_pdfplumber(pdf_path: Path, txt_path: Path):
 
     with open(txt_path, "w", encoding="utf-8") as f:
         f.write(text)
-    print("✅ Texto extraído e salvo como .txt")
+    print("Texto extraído e salvo como .txt")
 
 
 def ingest_pdf(txt_path: Path):
-    print("📚 Carregando texto e dividindo em chunks...")
+    print("Carregando texto e dividindo em chunks...")
     loader = TextLoader(str(txt_path), encoding="utf-8")
     documents = loader.load()
 
@@ -37,7 +36,7 @@ def ingest_pdf(txt_path: Path):
     )
     docs = splitter.split_documents(documents)
 
-    print(f"✅ Total de chunks gerados: {len(docs)}")
+    print(f"Total de chunks gerados: {len(docs)}")
 
     embeddings = OllamaEmbeddings(model="nomic-embed-text")
 
@@ -45,7 +44,7 @@ def ingest_pdf(txt_path: Path):
         documents=docs, embedding=embeddings, persist_directory=str(CHROMA_PATH)
     )
 
-    print("✅ PDF processado e vetores salvos no banco vetorial.")
+    print("PDF processado e vetores salvos no banco vetorial.")
 
 
 if __name__ == "__main__":
