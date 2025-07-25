@@ -15,7 +15,7 @@ retriever = vectordb.as_retriever(
     search_kwargs={"k": 5},
 )
 
-llm = OllamaLLM(model="llama3")
+llm = OllamaLLM(model="mistral:7b-instruct")
 
 prompt_template = """
 Você é um assistente da Prefeitura especializado no preenchimento do BLAC.
